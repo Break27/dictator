@@ -1,0 +1,5 @@
+/app/jstoolchains/node_modules
+/app/static/css
+/app/static/js
+/venv
+db.sqlite3
