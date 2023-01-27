@@ -4,22 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %} - Dictator</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
     <!-- Styles -->
-    <link rel="stylesheet" href="{% static "css/tailwind.css" %}">
-    <!-- JS -->
-    <script src="{% static "js/app.bundle.js" %}" type="text/javascript"></script>
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
+    <!-- JS Bundle -->
+    <script src="{% static 'js/app.bundle.js' %}" type="text/javascript"></script>
 </head>
-<body>
+<body class="antialiased">
+    <div id="_" class="relative min-h-screen pt-4 px-4 dark:bg-slate-800 bg-white transition-colors duration-200">
 
-<div class="flex min-h-screen justify-center">
-    <div class="flex flex-col max-w-screen-lg w-full">
-        {% block content %}{% endblock %}
+        <nav class="flex pl-2 sm:pr-2 dark:text-gray-200">
+            {% include 'navigation/drawer.html' %}
+
+            <div class="flex flex-1 justify-center">
+                {% block header %}{% endblock %}
+            </div>
+
+            {% include 'navigation/navlinks.html' %}
+        </nav>
+
+        <main class="flex flex-col mt-4 px-2 items-center">
+            {% block content %}{% endblock %}
+        </main>
     </div>
-</div>
-
 </body>
 </html>

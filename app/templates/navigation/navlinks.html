@@ -1,0 +1,105 @@
+<div id="c_left" class="sm:hidden inline-flex cursor-pointer items-center px-2">
+    <span class="icon-[fa6-solid--caret-left]"></span>
+</div>
+
+<div id="nav_links" class="flex space-x-3 mt-1 text-sm font-semibold uppercase overflow-y-auto sm:overflow-y-hidden scrollbar-hidden">
+    <div>
+        <a href="{% url 'index' %}">Home</a>
+    </div>
+    <div>
+        <a href="{% url 'library' %}">Library</a>
+    </div>
+    <div>
+        <a href="">Forum</a>
+    </div>
+    <div>
+        <a href="">About</a>
+    </div>
+    <div id="t_b" class="cursor-pointer text-base">
+        <span id="t_i"></span>
+    </div>
+</div>
+
+<div id="c_right" class="sm:hidden inline-flex cursor-pointer items-center px-2">
+    <span class="icon-[fa6-solid--caret-right]"></span>
+</div>
+
+<script type="text/javascript">
+$(document).ready(() => {
+
+    const themeButton = $('#t_b');
+    const themeIcon = $('#t_i');
+
+    const updateThemeIcon = () => {
+
+        themeIcon.removeClass();
+
+        switch (theme.currentMode()) {
+            case 'light':
+                themeIcon.addClass('icon-[fa6-solid--sun]');
+                break;
+            case 'dark':
+                themeIcon.addClass('icon-[fa6-solid--moon] mx-[2.25px]');
+                break;
+            default:
+                themeIcon.addClass('icon-[fa6-solid--circle-half-stroke]');
+        }
+    };
+
+    themeButton.click(() => {
+        theme.toggle();
+        updateThemeIcon();
+    });
+
+    updateThemeIcon();
+
+
+    const links = $('#nav_links');
+    const caretLeft = $('#c_left');
+    const caretRight = $('#c_right');
+
+    const updateCaret = target => {
+        const left = target.scrollLeft;
+        const max = target.scrollWidth - target.offsetWidth;
+        const opacity = 'opacity-25';
+
+        if (left === 0) caretLeft.addClass(opacity);
+        else caretLeft.removeClass(opacity);
+
+        if (left === max) caretRight.addClass(opacity);
+        else caretRight.removeClass(opacity);
+    };
+
+    const scrollLinks = offsetY => {
+        links[0].scrollBy({
+            left: (offsetY),
+            behavior: 'smooth',
+        });
+    }
+
+    links.scroll(({ target }) => {
+        updateCaret(target);
+    });
+
+    caretLeft.mousedown(() => {
+        scrollLinks(-42);
+    });
+
+    caretRight.mousedown(() => {
+        scrollLinks(42);
+    });
+
+    updateCaret(links[0]);
+});
+</script>
+
+<style>
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+</style>
