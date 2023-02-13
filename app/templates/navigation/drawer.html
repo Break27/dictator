@@ -1,14 +1,15 @@
-<button class="d-trigger group inline-flex h-min items-center space-x-2 pr-4 text-lg" type="button">
+<button class="d-trigger group inline-flex h-min items-center space-x-0.5 mr-4 text-lg" type="button">
     <span class="icon-[fa6-solid--bars]"></span>
-    <span class="font-semibold">Alphabeta</span>
+    <span class="select-none">&nbsp;</span>
+    <span class="font-semibold hidden sm:block">Alphabeta</span>
 </button>
 
 <div id="_mask" class="absolute inset-0 min-h-screen transition-color duration-150 ease-in z-10 pointer-events-none"></div>
 
-<div id="_drawer" class="absolute inset-y-0 left-0 w-96 -translate-x-96 z-20 bg-white dark:bg-slate-800 brightness-100 border-r dark:border-gray-700 transition-transform duration-200 ease-in-out">
+<div id="_drawer" class="absolute inset-y-0 left-0 w-80 sm:w-96 -translate-x-80 sm:-translate-x-96 z-20 bg-white dark:bg-slate-800 brightness-100 border-r dark:border-gray-700 transition-transform duration-200 ease-in-out">
     <div class="flex pl-6 pt-4">
-        <div class="absolute top-0 right-0 rotate-90 w-min translate-y-3 bg-blue-400">
-            {% include 'misc/logo.html' with class='text-4xl text-white' mono=True %}
+        <div class="absolute top-0 right-0 rotate-90 w-min translate-y-3 bg-blue-400 dark:bg-blue-600">
+            {% include 'widgets/logo.html' with class='text-4xl text-white dark:text-gray-300' mono=True %}
         </div>
         <button class="d-trigger inline-flex items-center text-lg w-32" type="button">
             <span class="icon-[fa6-solid--angles-left]"></span>
@@ -26,7 +27,7 @@ $(document).ready(() => {
 
     const toggle = () => {
         $('body').toggleClass('overflow-hidden');
-        drawer.toggleClass('-translate-x-96');
+        drawer.toggleClass('-translate-x-80 sm:-translate-x-96');
         mask.toggleClass('bg-black/30 pointer-events-none');
     }
 

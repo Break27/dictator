@@ -1,34 +1,48 @@
-<form action="{% url 'search' %}" class="flex w-full">
-    <input
-            name="w"
-            class="search flex w-full border-2 border-r-0 border-blue-400 focus:ring-0 focus:border-blue-400 bg-transparent dark:caret-gray-200 dark:text-gray-200"
-            type="text"
-            placeholder="Search"
-            autocomplete="off"
-            value="{{ search_value }}"
-    >
-    <div class="b-clear inline-flex hidden items-center border-y-2 border-blue-400 pr-3">
-        <span class="icon-[fa6-solid--xmark] text-2xl text-gray-400 hover:text-gray-500 cursor-pointer"></span>
-    </div>
-    <div class="inline-flex items-center border-y-2 border-blue-400 pr-3">
-        <span class="icon-[fa6-solid--keyboard] text-xl text-gray-400 hover:text-gray-500 cursor-pointer"></span>
-    </div>
-    <button class="inline-flex border-2 border-blue-400 justify-center items-center px-2" type="submit">
-        <span class="icon-[fa6-solid--magnifying-glass] text-2xl text-blue-500"></span>
-    </button>
-</form>
-<!--
-<div class="relative">
-    <div class="absolute left-0 top-0 border-x-2 border-b-2 border-blue-400">Example</div>
-    <div class="absolute left-0 top-0 border-x-2 border-b-2 border-blue-400">Example 2</div>
-</div>
--->
+{% load app_extras %}
 
+<div class="w-full">
+    <form action="{% url 'search' %}" class="search flex w-full">
+        <input
+                name="w"
+                class="search flex w-full border-2 border-r-0 border-blue-400 dark:border-blue-600/90 focus:ring-0 focus:border-blue-400 bg-transparent dark:caret-gray-200"
+                type="text"
+                placeholder="Search"
+                autocomplete="off"
+                value="{{ search_value }}"
+        >
+        <div class="sc-btn inline-flex hidden items-center border-y-2 border-blue-400 dark:border-blue-600/90 pr-3">
+            <span class="icon-[fa6-solid--xmark] text-2xl text-gray-400 hover:text-gray-500 dark:text-opacity-80 cursor-pointer"></span>
+        </div>
+        <div class="inline-flex items-center border-y-2 border-blue-400 dark:border-blue-600/90 pr-3">
+            <span class="icon-[fa6-solid--keyboard] text-xl text-gray-400 hover:text-gray-500 dark:text-opacity-80 cursor-pointer"></span>
+        </div>
+        <button class="inline-flex border-2 border-blue-400 dark:border-blue-600/90 justify-center items-center px-2" type="submit">
+            <span class="icon-[fa6-solid--magnifying-glass] text-2xl text-blue-500 dark:text-opacity-90"></span>
+        </button>
+    </form>
+
+    <div class="relative">
+        <div class="s-suggest hidden absolute flex w-full border-x-2 border-b-2 border-blue-400 dark:border-blue-600/90 bg-white dark:bg-slate-700">
+            <ul class="my-2 w-full" role="listbox">
+                <li class="py-1 hover:bg-blue-100 dark:hover:bg-blue-500/25">
+                    <button class="s-option inline-flex w-full px-3" onclick="window.location.replace('{% url 'word' 'Example' %}')">
+                        Example
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% once %}
 <script type="text/javascript">
 $(document).ready(() => {
-
+    /**
+     * Clear search input
+     *
+     */
     const search = $('input.search');
-    const clearBtn = $('.b-clear');
+    const clearBtn = $('.sc-btn');
 
     const update = () => {
         if (search.val().length > 0) {
@@ -36,9 +50,13 @@ $(document).ready(() => {
             clearBtn.removeClass('hidden');
         }
         else clearBtn.addClass('hidden');
-    };
+    }
 
-    search.on('input propertychange', update);
+    search.on('input propertychange', ({ target }) => {
+        // unify all search bars' values
+        search.val(target.value);
+        update();
+    });
 
     clearBtn.click(() => {
         search.val('');
@@ -47,5 +65,29 @@ $(document).ready(() => {
     });
 
     update();
+
+    /**
+     * Search Suggestion
+     *
+     */
+    const suggest = $('.s-suggest');
+
+    search.focusin(() => {
+        suggest.removeClass('hidden');
+    });
+
+    $('body').click(e => {
+        if (! suggest.hasClass('hidden')) {
+            const token = e.target.classList[0];
+
+            if (token === 'search'
+                || token === 's-suggest'
+                || token === 's-option') {
+                return;
+            }
+            suggest.addClass('hidden');
+        }
+    });
 });
 </script>
+{% endonce %}

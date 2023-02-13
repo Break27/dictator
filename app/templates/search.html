@@ -1,28 +1,39 @@
-{% extends 'base.html' %}
+{% extends 'site/searchable.html' %}
+{% load teleport %}
+
 {% block title %} {{ search_value }} {% endblock %}
-{% block content %}
-
-<div class="w-full md:hidden">
-    {% include 'forms/searchbar.html' %}
-</div>
-
-<div class="flex flex-col divide-y dark:divide-gray-500">
-    <div class="block sm:flex pt-6 pb-4 max-w-6xl gap-x-4">
-        <div class="basis-2/3 lg:basis-3/4">
-            {% lorem %}
-        </div>
-        <div class="basis-1/3 lg:basis-1/4 mt-4 sm:mt-0">
-            {% lorem %}
-        </div>
+{% block left %}
+    {% include 'widgets/content_column.html' with column_title='Words' contents=results.words %}
+    <div class="divide-y dark:divide-gray-500 mb-4">
+        {% for word in results.words %}
+            {% include 'widgets/word_snippet.html' %}
+        {% endfor %}
     </div>
-</div>
-
+    {% teleport results.words.count > 0 ? 'right_side' %}
+        {% include 'widgets/content_column.html' with column_title='Paraphrases' contents=results.entries %}
+        <div class="divide-y dark:divide-gray-500 mb-4">
+            {% for entry in results.entries %}
+                <div class="grid">
+                    <div>
+                        {{ entry.paraphrase }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endteleport %}
+    {% teleport results.words.count > 0 or results.entries.count > 0 ? 'right_side' %}
+        {% include 'widgets/content_column.html' with column_title='Sentences' contents=results.sentences %}
+        <div class="divide-y dark:divide-gray-500 mb-4">
+            {% for sentence in results.sentences %}
+                <div class="grid">
+                    <div>
+                        {{ sentence.transcript }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endteleport %}
 {% endblock %}
-
-{% block header %}
-
-<div class="hidden md:flex max-w-3xl w-full sm:pl-4 pr-6 -translate-y-1">
-    {% include 'forms/searchbar.html' %}
-</div>
-
+{% block right %}
+    {% portal 'right_side' %}
 {% endblock %}

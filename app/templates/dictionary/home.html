@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "site/base.html" %}
 {% block title %} Dictator {% endblock %}
 {% block content %}
 
 <div class="grid max-w-xl w-full mt-36 justify-items-center space-y-10">
-    {% include 'misc/logo.html' with class='text-6xl' %}
+    {% include 'widgets/logo.html' with class='text-6xl dark:opacity-90' %}
     {% include 'forms/searchbar.html' %}
 </div>
 

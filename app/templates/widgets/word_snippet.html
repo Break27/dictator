@@ -1,0 +1,55 @@
+{% load app_extras %}
+{% regroup word.entries.all by word_class as entry_groups %}
+
+<div class="first:pt-0 pt-4">
+    {% for group in entry_groups %}
+        <div class="flex flex-col pb-4">
+            <div class="grid grid-cols-2">
+                <div>
+                    <span class="text-3xl font-semibold pr-1">
+                        {% with c=forloop.counter0 %}
+                            {{ word.transcript }}<sup class="text-base">{% if c %}{{c}}{% endif %}</sup>
+                        {% endwith %}
+                    </span>
+                    <span>{{ group.grouper.name }}</span>
+                </div>
+                <div class="grid justify-self-end">
+                    <!-- IPAs -->
+                    <span>/lorem/</span>
+                    <span>/lomer/</span>
+                </div>
+            </div>
+            <ol class="entry mt-3 ml-5 space-y-3">
+                {% for entry in group.list %}
+                    <li class="entry">
+                        {{ entry.paraphrase }}
+                        <ul class="list-disc ml-4 mt-2 text-sm text-gray-500 dark:text-neutral-400 space-y-2">
+                            {% for example in entry.examples.all %}
+                                <li>{{ example.transcript }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    {% endfor %}
+</div>
+
+{% once %}
+<style>
+ol.entry {
+    counter-reset: item;
+}
+
+li.entry::before {
+    counter-increment: item;
+    content: counter(item) " ";
+    position: absolute;
+    margin-left: -1.25rem;
+    margin-top: 1px;
+    font-weight: bold;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+</style>
+{% endonce %}

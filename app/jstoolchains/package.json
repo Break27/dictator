@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build:js && npm run build:css",
-    "build:css": "tailwindcss -i ./tailwind.css -o ../static/css/tailwind.css --minify",
-    "watch:css": "tailwindcss -i ./tailwind.css -o ../static/css/tailwind.css --watch",
+    "build:css": "tailwindcss -i ./tailwind.css -o ../static/css/app.css --minify",
+    "watch:css": "tailwindcss -i ./tailwind.css -o ../static/css/app.css --watch",
     "build:js": "esbuild ./app.js --outfile=../static/js/app.bundle.js --bundle --minify",
     "watch:js": "esbuild ./app.js --outfile=../static/js/app.bundle.js --bundle --watch"
   },
